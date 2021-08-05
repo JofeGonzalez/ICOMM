@@ -34,7 +34,7 @@ namespace ICOMM
                 default:
                     Console.WriteLine("Option entered incorrect");
                     break;
-            }                        
+            }
             Console.ReadLine();
         }
         /// <summary>
@@ -46,12 +46,19 @@ namespace ICOMM
         public static int PositiveCases(int month, int year)
         {
             int sum = 0;
+            int resultado = 0;
             GetApi getApi = new GetApi();
             dynamic respuesta = getApi.Get("https://api.covidtracking.com/v1/us/daily.json");
             //Formato-> //añomesdia... aaaammddd
             for (int i = 0; i < respuesta.Count; i++)
             {
-                int resultado = respuesta[i].date - int.Parse(year.ToString() + "0" + month.ToString() + "00");
+                if (month < 10)
+                {
+                    resultado = respuesta[i].date - int.Parse(year.ToString() + "0" + month.ToString() + "00");
+                } else
+                {
+                    resultado = respuesta[i].date - int.Parse(year.ToString() + month.ToString() + "00");
+                }
                 if (resultado > 0 && resultado < 32)
                 {
                     sum = sum + int.Parse(respuesta[i].positiveIncrease.ToString());
@@ -76,5 +83,5 @@ namespace ICOMM
             return lista;
         }
 
-}
+    }
 }
